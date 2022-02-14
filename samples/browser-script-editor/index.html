@@ -2,6 +2,20 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<input type="checkbox" id="trackInput" name="trackInput">
+  		<label for="trackInput">Track input?</label>
+
+		<input type="checkbox" id="noNewlines" name="noNewlines">
+		<label for="noNewlines">Nonewlines</label>
+
+		<input type="checkbox" id="oneNewline" name="oneNewline">
+		<label for="oneNewline">oneNewline</label>
+
+		<input type="checkbox" id="multipleNewLines" name="multipleNewLines">
+		<label for="multipleNewLines">multipleNewLines</label>
+
+		<button type="button" onclick="clearFunction()">Clear</button>
+
 		<link
 			rel="stylesheet"
 			data-name="vs/editor/editor.main"
@@ -20,10 +34,76 @@
 		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
 
 		<script>
+			function clearFunction() {
+				editor.getModel().setValue("");
+			}
+
 			var editor = monaco.editor.create(document.getElementById('container'), {
-				value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
-				language: 'javascript'
+				value: [''].join('\n'),
+				language: 'text',
+				wordWrap: 'off',
+				lineNumbers: 'on',
+				glyphMargin: false,
+				lineDecorationsWidth: 20,
+				rulers: [],
+				folding: false,
+				scrollBeyondLastLine: false,
+				renderLineHighlight: 'none',
+				renderValidationDecorations: 'editable',
+				padding: undefined,
+				readOnly: true,
+				domReadOnly: true,
+				fixedOverflowWidgets: true,
+				theme: 'vs-dark',
+				contextmenu: false // this disables the ability to show the context menu
 			});
+
+			// this disables the monaco keybinding, which disables the monaco search box, which might not 
+			// be VS themeable.
+			editor._standaloneKeybindingService.addDynamicKeybinding("-actions.find", null, () => {});
+
+			// disables the F1 command pallete
+			editor.addCommand(monaco.KeyCode.F1, () => {});
+
+			const method = () => {
+				const lineCount = editor.getModel().getLineCount();
+				const lastLineLength = editor.getModel().getLineMaxColumn(lineCount);
+
+				const range = new monaco.Range(
+					lineCount,
+					lastLineLength,
+					lineCount,
+					lastLineLength
+				);
+
+				const noNewlineText = "noNewlineText";
+				const oneNewlineText = "new line: \n";
+				const multipleNewlineText = "new in \n between \n";
+
+				if (document.getElementById('noNewlines').checked) {
+					editor.getModel().applyEdits([{text: noNewlineText, range: range}]);
+				}
+
+				if (document.getElementById('oneNewline').checked) {
+					editor.getModel().applyEdits([{text: oneNewlineText, range: range}]);
+				}
+
+				if (document.getElementById('multipleNewLines').checked) {
+					editor.getModel().applyEdits([{text: multipleNewlineText, range: range}]);
+				}
+				
+
+				if (document.getElementById('trackInput').checked) {
+					editor.revealLine(editor.getModel().getLineCount());
+					editor.setPosition({column: 1, lineNumber: editor.getModel().getLineCount()});
+				}
+			};
+
+			editor.onDidFocusEditorText(() => {
+				document.getElementById('trackInput').checked = false;
+			});
+
+			setInterval(method, .01);
 		</script>
 	</body>
 </html>

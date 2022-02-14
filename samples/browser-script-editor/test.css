@@ -1,0 +1,44 @@
+/* The view lines are for the text area and the text lines. */
+.view-lines {
+    background-color: #1f1f1f;
+}
+
+.view-line {
+    color: #d6d6d6;
+    font-family: "Segoe UI";
+    font-size: 9pt;
+    font-weight: normal;
+}
+
+/* The mtk styles are for the text spans on each line */
+.mtk1 {
+    color: #d6d6d6;
+}
+
+.mtkw {
+    color: #d6d6d6;
+}
+
+.margin-view-overlays {
+    background-color: #1f1f1f;
+}
+
+.editor-widget.find-widget {
+    background-color: white;
+}
+
+/* This is the total input box. */
+.monaco-inputbox {
+    background-color: white !important;
+}
+
+/* This is the actual input, the problem is that it seems a 
+   decent amount of these monaco items have inline styling.
+   This is why the !important keyword is there. */
+.input {
+    color: black !important;
+}
+
+.monaco-findInput {
+    background-color: white !important;
+}
