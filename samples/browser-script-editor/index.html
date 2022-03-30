@@ -19,7 +19,7 @@
 		<link
 			rel="stylesheet"
 			data-name="vs/editor/editor.main"
-			href="../node_modules/monaco-editor/min/vs/editor/editor.main.css"
+			href="./editor.main.css"
 		/>
 	</head>
 	<body>
@@ -27,11 +27,11 @@
 		<div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
 
 		<script>
-			var require = { paths: { vs: '../node_modules/monaco-editor/min/vs' } };
+			var require = { paths: { vs: '.' } };
 		</script>
-		<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
-		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
-		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+		<script src="./loader.js"></script>
+		<script src="./editor.main.nls.js"></script>
+		<script src="./editor.main.js"></script>
 
 		<script>
 			function clearFunction() {
@@ -60,7 +60,7 @@
 
 			// this disables the monaco keybinding, which disables the monaco search box, which might not 
 			// be VS themeable.
-			editor._standaloneKeybindingService.addDynamicKeybinding("-actions.find", null, () => {});
+			editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF, () => {});
 
 			// disables the F1 command pallete
 			editor.addCommand(monaco.KeyCode.F1, () => {});
